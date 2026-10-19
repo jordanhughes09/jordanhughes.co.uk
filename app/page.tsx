@@ -6,7 +6,8 @@ export default function Home() {
     <main className="flex flex-1 flex-col justify-between gap-16 px-(--gutter) pb-8 pt-8 font-sans [--gutter:1.25rem] sm:[--gutter:2rem]">
       <div className="flex max-w-xl flex-col gap-4 text-lg leading-relaxed">
         <p>
-          Product manager in London, working on AI and streaming platforms.
+          Senior AI product manager in London, turning business problems into
+          working AI products.
         </p>
         <p>
           A new site is on the way. Until then, email me at{" "}

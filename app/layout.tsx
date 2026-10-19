@@ -10,7 +10,7 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: "Jordan Hughes",
   description:
-    "Jordan Hughes, product manager in London working on AI and streaming platforms.",
+    "Jordan Hughes, senior AI product manager in London, turning business problems into working AI products.",
   // Holding page: keep it out of search results until the real site launches.
   robots: { index: false, follow: false },
 };
