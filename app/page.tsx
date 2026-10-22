@@ -27,7 +27,7 @@ export default function Home() {
 
         <section aria-labelledby="career">
           <h2 id="career">Career</h2>
-          <div className="org">
+          <div className="org" data-place="sky">
             <h3 className="org-head">
               <span>
                 <span className="mk" aria-hidden="true" />
@@ -62,7 +62,7 @@ export default function Home() {
               </li>
             </ol>
           </div>
-          <div className="org">
+          <div className="org" data-place="toyota">
             <h3 className="org-head">
               <span>
                 <span className="mk" aria-hidden="true" />
@@ -75,7 +75,7 @@ export default function Home() {
               and cost.
             </p>
           </div>
-          <div className="org">
+          <div className="org" data-place="lboro">
             <h3 className="org-head">
               <span>
                 <span className="mk" aria-hidden="true" />
@@ -89,7 +89,7 @@ export default function Home() {
 
         <section aria-labelledby="side">
           <h2 id="side">On the side</h2>
-          <div className="org">
+          <div className="org" data-place="fms">
             <h3 className="org-head">
               <span>
                 <span className="mk side" aria-hidden="true" />
@@ -99,7 +99,7 @@ export default function Home() {
             </h3>
             <p>My own project: using AI to make golf club fitting accessible to everyone.</p>
           </div>
-          <div className="org">
+          <div className="org" data-place="sis">
             <h3 className="org-head">
               <span>
                 <span className="mk side" aria-hidden="true" />

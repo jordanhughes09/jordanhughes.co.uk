@@ -110,7 +110,7 @@ function mount(section: HTMLElement, svg: SVGSVGElement, wrap: HTMLElement, card
   let width = 0, scale = 1, selected = "sky";
   let nodes: Record<string, SVGGElement> = {}, links: Link[] = [], pulses: Pulse[] = [];
   let pulseLayer: SVGGElement;
-  let auto = !reduce, held = false, visible = false, drawn = false;
+  let auto = !reduce, held = false, visible = false, drawn = false, scrolledTo = false;
   let timer: ReturnType<typeof setTimeout> | undefined, raf = 0;
 
   function build() {
@@ -253,10 +253,40 @@ function mount(section: HTMLElement, svg: SVGSVGElement, wrap: HTMLElement, card
   }, { signal });
   svg.addEventListener("pointerover", (e) => {
     const id = nodeOf(e);
-    if (id && id !== selected && e.pointerType === "mouse") select(id);
+    if (id && id !== selected && e.pointerType === "mouse" && !scrolledTo) select(id);
+  }, { signal });
+  // After a Career heading scrolls the page under a still mouse, wait for the mouse to move
+  // before hovering picks something else.
+  document.addEventListener("pointermove", (e) => {
+    if (!scrolledTo || (!e.movementX && !e.movementY)) return;
+    scrolledTo = false;
+    const id = nodeOf(e);
+    if (id && id !== selected) select(id);
   }, { signal });
   wrap.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") { held = true; play(); } }, { signal });
   wrap.addEventListener("pointerleave", () => { held = false; play(); }, { signal });
+
+  // The Career and On the side entries point at the map too (data-place in page.tsx). Pointing
+  // at one lights it up; clicking its heading picks it and brings the map into view.
+  for (const org of document.querySelectorAll<HTMLElement>("[data-place]")) {
+    const id = org.dataset.place!;
+    org.addEventListener("pointerenter", (e) => {
+      if (e.pointerType !== "mouse" || scrolledTo) return;
+      held = true;
+      play();
+      if (id !== selected) select(id);
+    }, { signal });
+    org.addEventListener("pointerleave", () => { held = false; play(); }, { signal });
+    org.querySelector(".org-head")!.addEventListener("click", (e) => {
+      if ((e.target as Element).closest("a") || getSelection()?.toString()) return;
+      choose(id);
+      const box = svg.getBoundingClientRect();
+      if (box.top >= 0 && box.bottom <= innerHeight) return;
+      scrolledTo = true;
+      section.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+    }, { signal });
+  }
+  document.body.classList.add("map-on");
 
   section.hidden = false;
   build();
@@ -282,6 +312,7 @@ function mount(section: HTMLElement, svg: SVGSVGElement, wrap: HTMLElement, card
     clearTimeout(timer);
     cancelAnimationFrame(raf);
     svg.classList.remove("drawn");
+    document.body.classList.remove("map-on");
   };
 }
 

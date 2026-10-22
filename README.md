@@ -15,6 +15,7 @@ Then open http://localhost:3000.
 
 - `app/page.tsx`: the page and its copy
 - `app/connects-map.tsx`: the interactive "How it connects" map and its captions
+- `app/theme-toggle.tsx` and `app/theme.ts`: the day/night toggle and the script that applies a saved choice
 - `app/globals.css`: all styles, with light and dark colours at the top
 - `app/layout.tsx`: font, title, description and share image (`public/og.png`)
 

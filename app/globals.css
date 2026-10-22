@@ -68,17 +68,22 @@ h1 { font-size: clamp(2.75rem, 9vw, 4.5rem); line-height: 1; letter-spacing: -0.
 .org-head a, .foot a { padding-block: 12px; }
 a:hover, .links a:hover { color: var(--moss-ink); }
 
-/* Day/night toggle in the footer: a moon in day mode, a sun in night mode. */
-.theme-toggle { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin: -14px -14px -14px 0; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
+/* Day/night toggle: a moon in day mode, a sun in night mode, sitting on the right-hand end of
+   the footer rule so the footer sentence keeps the full width. */
+.theme-toggle { position: absolute; top: -24.5px; right: -14px; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
 .theme-toggle:hover { color: var(--moss-ink); }
+.theme-toggle > span { display: flex; padding: 4px; border-radius: 50%; background: var(--bg); }
 .theme-toggle svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .theme-toggle .to-light { display: none; }
 :root[data-theme="dark"] .theme-toggle .to-dark { display: none; }
-:root[data-theme="dark"] .theme-toggle .to-light { display: inline; }
+:root[data-theme="dark"] .theme-toggle .to-light { display: flex; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .theme-toggle .to-dark { display: none; }
-  :root:not([data-theme="light"]) .theme-toggle .to-light { display: inline; }
+  :root:not([data-theme="light"]) .theme-toggle .to-light { display: flex; }
 }
+/* The switch spreads out from the icon in a circle (theme-toggle.tsx). */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+:root[data-switching] * { transition: none !important; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 section { margin-top: 72px; }
@@ -131,6 +136,9 @@ h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 0 0 6px; font-weight:
 .org-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; margin: 0; font-size: 1.125rem; font-weight: 700; }
 .org-head .yrs { color: var(--muted); font-weight: 400; font-size: 1rem; font-variant-numeric: tabular-nums; }
 .org > p { margin: 4px 0 0; color: var(--muted); }
+/* With the map running, an entry's heading selects it on the map. */
+.map-on [data-place] .org-head { cursor: pointer; }
+.map-on [data-place]:hover .org-head > span:first-child { color: var(--moss-ink); }
 
 .roles { list-style: none; margin: 14px 0 0; padding: 0 0 0 4px; }
 .roles li { position: relative; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; padding: 0 0 18px 24px; }
@@ -140,13 +148,23 @@ h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 0 0 6px; font-weight:
 .roles strong { font-weight: 600; }
 .roles .when { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
 .roles p { flex-basis: 100%; margin: 2px 0 0; color: var(--muted); }
+/* The role line draws itself as it scrolls up the screen. Without support it is simply there. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .roles li { view-timeline-name: --role; }
+    .roles li::before { animation: pop-dot linear both; animation-timeline: --role; animation-range: entry 0% entry 80%; }
+    .roles li:not(:last-child)::after { transform-origin: top; animation: draw-line linear both; animation-timeline: --role; animation-range: entry 40% cover 30%; }
+  }
+}
+@keyframes pop-dot { from { transform: scale(0); } }
+@keyframes draw-line { from { transform: scaleY(0); } }
 
 .quote { margin: 0 0 20px; padding: 2px 0 2px 20px; border-left: 3px solid var(--moss); }
 .quote blockquote { margin: 0 0 4px; }
 .quote blockquote p { margin: 0; font-size: 1.1875rem; line-height: 1.45; }
 .quote figcaption { color: var(--muted); font-size: 0.9375rem; }
 
-.foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 80px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9375rem; }
+.foot { position: relative; margin: 80px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9375rem; }
 .foot p { margin: 0; }
 
 @media (max-width: 35em) {

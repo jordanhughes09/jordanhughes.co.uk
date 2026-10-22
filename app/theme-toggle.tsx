@@ -1,18 +1,42 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { setChosenColor, type Theme } from "./theme";
 
-function toggleTheme() {
-  const root = document.documentElement;
-  const current = root.dataset.theme ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  const next: Theme = current === "dark" ? "light" : "dark";
-  root.dataset.theme = next;
-  setChosenColor(next);
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  setChosenColor(theme);
   try {
-    localStorage.setItem("theme", next);
+    localStorage.setItem("theme", theme);
   } catch {
     // Private browsing can block storage; the switch still works for this visit.
   }
+}
+
+// The new theme spreads out from the icon in a circle. Browsers without view transitions,
+// and visitors who ask for less motion, get an instant switch.
+function toggleTheme(event: MouseEvent<HTMLButtonElement>) {
+  const root = document.documentElement;
+  const current = root.dataset.theme ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next: Theme = current === "dark" ? "light" : "dark";
+  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyTheme(next);
+    return;
+  }
+
+  const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
+  const x = left + width / 2, y = top + height / 2;
+  const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  // Hold the page's own colour transitions so the circle sweeps over finished colours.
+  root.dataset.switching = "";
+  const transition = document.startViewTransition(() => applyTheme(next));
+  transition.ready.then(() => {
+    root.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      { duration: 650, easing: "cubic-bezier(.3, .6, .2, 1)", pseudoElement: "::view-transition-new(root)" },
+    );
+  });
+  transition.finished.finally(() => delete root.dataset.switching);
 }
 
 // CSS (globals.css) shows the moon in day mode and the sun in night mode, so the icon and its
