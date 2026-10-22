@@ -1,24 +1,57 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({
-  variable: "--font-geist",
+const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-schibsted",
+  display: "swap",
 });
 
+const title = "Jordan Hughes – Senior Product Manager for AI at Sky";
+const description =
+  "Jordan Hughes is a Senior Product Manager for AI at Sky in London. He turns business problems into working AI products and builds a lot of them himself.";
+
+// Icons come from icon.svg and apple-icon.png in this folder. The share image is public/og.png,
+// declared here because this Next.js version drops opengraph-image.alt.txt.
+const image = {
+  url: "/og.png",
+  width: 1200,
+  height: 630,
+  alt: "Jordan Hughes, Senior Product Manager for AI at Sky",
+};
+
 export const metadata: Metadata = {
-  title: "Jordan Hughes",
-  description:
-    "Jordan Hughes, senior AI product manager in London, turning business problems into working AI products.",
-  // Holding page: keep it out of search results until the real site launches.
-  robots: { index: false, follow: false },
+  metadataBase: new URL("https://jordanhughes.co.uk"),
+  title,
+  description,
+  authors: [{ name: "Jordan Hughes" }],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Jordan Hughes",
+    locale: "en_GB",
+    title,
+    description,
+    images: [image],
+  },
+  twitter: { card: "summary_large_image", title, description, images: [image] },
+  robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2f3ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#121611" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-GB" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en-GB" className={schibsted.variable}>
+      <body>{children}</body>
     </html>
   );
 }

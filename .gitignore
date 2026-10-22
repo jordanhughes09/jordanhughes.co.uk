@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# private planning notes (never published)
+notes/
+
+# local agent and editor config (may hold tokens)
+.mcp.json
+CLAUDE.local.md
+.claude/settings.local.json
+
+# local preview config (contains a local path)
+.claude/launch.json
