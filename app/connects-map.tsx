@@ -41,7 +41,7 @@ const places: Place[] = [
   { id: "toyota", name: "Toyota (GB)", years: "2018 to 2019", to: ["eng", "people"],
     line: "Systems Analyst on IT for the UK dealer network." },
   { id: "lboro", name: "Loughborough", full: "Loughborough University", years: "2016 to 2020", to: ["eng"],
-    line: "Master’s in Computer Science, First Class." },
+    line: "Bachelor’s in Computer Science, First Class." },
   { id: "fms", name: "FitMySwing", years: "2025 to now", side: true, to: ["ai", "product"],
     line: "My own project: AI that makes golf club fitting accessible to everyone." },
   { id: "sis", name: "SIS", years: "2021 to now", side: true, to: ["people", "live"],

@@ -82,7 +82,7 @@ export default function Home() {
               </span>
               <span className="yrs">2016 to 2020</span>
             </h3>
-            <p>Master’s in Computer Science, First Class.</p>
+            <p>Bachelor’s in Computer Science, First Class.</p>
           </div>
         </section>
 
