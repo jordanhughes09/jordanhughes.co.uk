@@ -1,4 +1,5 @@
 import { ConnectsMap } from "./connects-map";
+import { ThemeToggle } from "./theme-toggle";
 
 const linkedIn = "https://www.linkedin.com/in/jordan-c-hughes/";
 
@@ -131,9 +132,12 @@ export default function Home() {
         </section>
       </main>
       <footer>
-        <p className="foot">
-          Jordan Hughes, London. Say hello on <a href={linkedIn}>LinkedIn</a>.
-        </p>
+        <div className="foot">
+          <p>
+            Jordan Hughes, London. Say hello on <a href={linkedIn}>LinkedIn</a>.
+          </p>
+          <ThemeToggle />
+        </div>
       </footer>
     </>
   );

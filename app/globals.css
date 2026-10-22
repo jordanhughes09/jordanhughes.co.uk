@@ -12,8 +12,10 @@
   --clay: #b4532a;
   --card: #fafbf7;
 }
+/* Dark colours follow the device setting until the visitor picks a theme with the toggle,
+   which sets data-theme on <html>. Keep the two dark blocks the same. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #121611;
     --fg: #e8ebe3;
     --muted: #b0b8aa;
@@ -25,6 +27,20 @@
     --clay: #e0895c;
     --card: #1b2119;
   }
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121611;
+  --fg: #e8ebe3;
+  --muted: #b0b8aa;
+  --dim: #7d8479;
+  --line: #273026;
+  --edge: #344033;
+  --moss: #9cc07e;
+  --moss-ink: #a9cc8b;
+  --clay: #e0895c;
+  --card: #1b2119;
 }
 
 * { box-sizing: border-box; }
@@ -51,6 +67,19 @@ h1 { font-size: clamp(2.75rem, 9vw, 4.5rem); line-height: 1; letter-spacing: -0.
 /* Inline links get a 48 px tall hit area without moving the text around them. */
 .org-head a, .foot a { padding-block: 12px; }
 a:hover, .links a:hover { color: var(--moss-ink); }
+
+/* Day/night toggle in the footer: a moon in day mode, a sun in night mode. */
+.theme-toggle { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin: -14px -14px -14px 0; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
+.theme-toggle:hover { color: var(--moss-ink); }
+.theme-toggle svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle .to-light { display: none; }
+:root[data-theme="dark"] .theme-toggle .to-dark { display: none; }
+:root[data-theme="dark"] .theme-toggle .to-light { display: inline; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .to-dark { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .to-light { display: inline; }
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 section { margin-top: 72px; }
 h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 0 0 6px; font-weight: 700; }
@@ -117,7 +146,8 @@ h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 0 0 6px; font-weight:
 .quote blockquote p { margin: 0; font-size: 1.1875rem; line-height: 1.45; }
 .quote figcaption { color: var(--muted); font-size: 0.9375rem; }
 
-.foot { margin: 80px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9375rem; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 80px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9375rem; }
+.foot p { margin: 0; }
 
 @media (max-width: 35em) {
   main { padding-top: 56px; }
