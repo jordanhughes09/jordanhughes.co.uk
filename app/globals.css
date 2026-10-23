@@ -65,14 +65,16 @@ h1 { font-size: clamp(2.75rem, 9vw, 4.5rem); line-height: 1; letter-spacing: -0.
 .links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 24px; margin: 0; padding: 0; list-style: none; color: var(--muted); }
 .links a { display: inline-flex; align-items: center; min-height: 48px; color: var(--fg); }
 /* Inline links get a 48 px tall hit area without moving the text around them. */
-.org-head a, .foot a { padding-block: 12px; }
+.org-head a { padding-block: 12px; }
+.foot a { padding-block: 14px; }
 a:hover, .links a:hover { color: var(--moss-ink); }
 
 /* Day/night toggle: a moon in day mode, a sun in night mode, sitting on the right-hand end of
-   the footer rule so the footer sentence keeps the full width. */
-.theme-toggle { position: absolute; top: -24.5px; right: -14px; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
+   the footer rule so the footer sentence keeps the full width. Its tap area sits mostly above
+   the rule, clear of the LinkedIn link below. */
+.theme-toggle { position: absolute; top: -41px; right: -14px; display: flex; align-items: flex-end; justify-content: center; width: 48px; height: 48px; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
 .theme-toggle:hover { color: var(--moss-ink); }
-.theme-toggle > span { display: flex; padding: 4px; border-radius: 50%; background: var(--bg); }
+.theme-toggle > span { display: flex; margin-bottom: -7px; padding: 4px; border-radius: 50%; background: var(--bg); }
 .theme-toggle svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .theme-toggle .to-light { display: none; }
 :root[data-theme="dark"] .theme-toggle .to-dark { display: none; }

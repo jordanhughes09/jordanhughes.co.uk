@@ -335,7 +335,8 @@ export function ConnectsMap() {
         Where I’ve worked, and what each place has in common. Point at or tap any name.
       </p>
       <div className="net-wrap" ref={wrapRef}>
-        <svg id="net" role="group" aria-label="Places and what they have in common" ref={svgRef} />
+        {/* tabIndex -1: the names inside are the tab stops, not the drawing around them. */}
+        <svg id="net" role="group" aria-label="Places and what they have in common" tabIndex={-1} ref={svgRef} />
         <div className="caption" ref={cardRef}>
           <div className="cap-text" aria-live="off" ref={capTextRef}>
             <p className="cap-title">
