@@ -148,16 +148,17 @@ h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 0 0 6px; font-weight:
 .roles strong { font-weight: 600; }
 .roles .when { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
 .roles p { flex-basis: 100%; margin: 2px 0 0; color: var(--muted); }
-/* The role line draws itself as it scrolls up the screen. Without support it is simply there. */
+/* The role line draws itself as the role scrolls through the middle of the screen, at full
+   strength, then settles to its usual tone. Without support it is simply there. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .roles li { view-timeline-name: --role; }
-    .roles li::before { animation: pop-dot linear both; animation-timeline: --role; animation-range: entry 0% entry 80%; }
-    .roles li:not(:last-child)::after { transform-origin: top; animation: draw-line linear both; animation-timeline: --role; animation-range: entry 40% cover 30%; }
+    .roles li::before { animation: pop-dot linear both; animation-timeline: --role; animation-range: cover 17% cover 27%; }
+    .roles li:not(:last-child)::after { transform-origin: top; animation: draw-line linear both; animation-timeline: --role; animation-range: cover 27% cover 57%; }
   }
 }
 @keyframes pop-dot { from { transform: scale(0); } }
-@keyframes draw-line { from { transform: scaleY(0); } }
+@keyframes draw-line { from { transform: scaleY(0); opacity: 1; } 85% { opacity: 1; } }
 
 .quote { margin: 0 0 20px; padding: 2px 0 2px 20px; border-left: 3px solid var(--moss); }
 .quote blockquote { margin: 0 0 4px; }
